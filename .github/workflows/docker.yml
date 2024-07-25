@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,9 +25,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: docker/build-push-action@v6
+      - name: a
+        uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           context: a
-          push: true
-          tags: mac2000/a:latest
+          tags: ghcr.io/mac2000/a:latest
+
+      - name: b
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: b
+          tags: ghcr.io/mac2000/b:latest
