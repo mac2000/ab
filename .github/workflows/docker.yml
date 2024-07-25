@@ -25,16 +25,28 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: docker/metadata-action@v5
+        id: a
+        with:
+          images: ghcr.io/mac2000/a
+
       - name: a
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           context: a
-          tags: ghcr.io/mac2000/a:latest
+          tags: ${{ steps.a.outputs.tags }}
+          labels: ${{ steps.a.outputs.labels }}
+
+      - uses: docker/metadata-action@v5
+        id: b
+        with:
+          images: ghcr.io/mac2000/b
 
       - name: b
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
           context: b
-          tags: ghcr.io/mac2000/b:latest
+          tags: ${{ steps.a.outputs.tags }}
+          labels: ${{ steps.a.outputs.labels }}
